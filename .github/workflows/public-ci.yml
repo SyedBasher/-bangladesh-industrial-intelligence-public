@@ -1,0 +1,24 @@
+name: Public shell checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  public-shell:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this public repository only
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate public shell
+        run: python -m unittest discover -s tests -v
