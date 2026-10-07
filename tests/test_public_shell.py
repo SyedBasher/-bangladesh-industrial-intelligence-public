@@ -64,7 +64,9 @@ class PublicShellTests(unittest.TestCase):
         yml = (ROOT / ".github/workflows/public-ci.yml").read_text(encoding="utf-8")
         self.assertIn("permissions:\n  contents: read", yml)
         self.assertNotIn("${{ secrets.", yml)
-        self.assertNotIn("checkout@v", yml.lower().replace("actions/checkout@", "checkout@v") if False else "nothing")
+        self.assertIn("uses: actions/checkout@v4", yml)
+        self.assertIn("persist-credentials: false", yml)
+        self.assertNotIn("secrets:", yml)
         self.assertNotRegex(yml, r"(?i)BEI_READ_TOKEN|CLOUDFLARE_API_TOKEN|repository:\s*SyedBasher/")
 
 if __name__ == "__main__":
